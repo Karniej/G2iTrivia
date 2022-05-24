@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { useCallback, useEffect } from 'react'
-import { Button, StyleSheet } from 'react-native'
+import { Alert, Button, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { API_URL } from '../constants/constants'
 import { Text } from '../components/Themed'
@@ -16,9 +16,13 @@ export default function HomeScreen({
   const { state, setState } = useStore()
   const { answers } = state
   const setData: () => void = useCallback(async () => {
-    const data = await axios.get(API_URL)
-    const { data: results } = await data
-    setState({ questions: results.results, answers: [...answers] })
+    try {
+      const data = await axios.get(API_URL)
+      const { data: results } = await data
+      setState({ questions: results.results, answers: [...answers] })
+    } catch (error: any) {
+      Alert.alert('Error', error.message)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
