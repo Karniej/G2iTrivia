@@ -4,7 +4,7 @@ import { QuestionCard } from '../components/QuestionCard'
 
 import { Text, View } from '../components/Themed'
 import { Title } from '../components/Title'
-import { cleanStringFromUnwantedChars } from '../constants/helpers'
+import { parseQuestionString } from '../constants/helpers'
 import { Answer, Question, useStore } from '../store/store'
 import { RootStackScreenProps } from '../types'
 
@@ -19,9 +19,10 @@ export default function ResultsScreen({ navigation }: RootStackScreenProps<'Resu
     })
     handleNavigateHome()
   }
-  let score = state.answers.filter(
-    (answer: Answer) => answer.answer === answer.question.correct_answer
-  ).length
+  let score = `${
+    state.answers.filter((answer: Answer) => answer.answer === answer.question.correct_answer)
+      .length
+  } / ${state.questions.length}`
 
   const renderItem = ({ item }: { item: Answer }) => {
     const isGoodAnswer = item.answer === item.question.correct_answer
@@ -29,7 +30,7 @@ export default function ResultsScreen({ navigation }: RootStackScreenProps<'Resu
     return (
       <View style={styles.questionContainer}>
         <Text style={[styles.question, styles.icon]}>{isGoodAnswer ? '+' : '-'}</Text>
-        <Text style={styles.question}>{cleanStringFromUnwantedChars(item.question.question)}</Text>
+        <Text style={styles.question}>{parseQuestionString(item.question.question)}</Text>
       </View>
     )
   }
@@ -41,7 +42,7 @@ export default function ResultsScreen({ navigation }: RootStackScreenProps<'Resu
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <Title title={`You scored ${score}/10`} />
+      <Title title={`You scored ${score}`} />
       <FlatList
         data={state.answers}
         renderItem={renderItem}
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   questionContainer: {
+    backgroundColor: 'transparent',
     maxWidth: '100%',
     justifyContent: 'space-between',
     alignItems: 'flex-start',

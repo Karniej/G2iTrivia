@@ -11,24 +11,59 @@ const specialCharCounter = (str: string) => {
   }
   return count
 }
-const removeCharsFromString = (str: string, count: number) => {
+const replaceHTMLentityFromString = (str: string, count: number) => {
   let run = count - 1
   let firstIndex = str.indexOf('&')
   let secondIndex = str.indexOf(';')
   let divider = str.slice(firstIndex, secondIndex + 1)
-  let returnedString = str.replaceAll(divider, '')
+  let returnedString = ''
+  switch (divider) {
+    case '&#x26;':
+    case '&amp;':
+      returnedString = str.replaceAll('&amp;', '&')
+      break
+    case '&quot;':
+      returnedString = str.replaceAll('&quot;', '"')
+      break
+    case '&#x27;':
+    case '&#039;':
+      returnedString = str.replaceAll('&#039;', "'")
+      break
+    case '&#x3B;':
+      returnedString = str.replaceAll('&#x3B;', ';')
+      break
+    case '&#x3A;':
+      returnedString = str.replaceAll('&#x3A;', ':')
+      break
+    case '&#x40;':
+      returnedString = str.replaceAll('&#x40;', '@')
+      break
+    case '&#x24;':
+      returnedString = str.replaceAll('&#x24;', '$')
+      break
+    case '&#x25;':
+      returnedString = str.replaceAll('&#x25;', '%')
+      break
+    case '&#x3F;':
+      returnedString = str.replaceAll('&#x3F;', '?')
+      break
+
+    default:
+      returnedString = str.replaceAll(divider, '')
+      break
+  }
 
   if (run > 0) {
     divider = ''
-    returnedString = removeCharsFromString(returnedString, run)
+    returnedString = replaceHTMLentityFromString(returnedString, run)
   }
 
   return returnedString
 }
 
-export const cleanStringFromUnwantedChars = (str: string) => {
+export const parseQuestionString = (str: string) => {
   let count = specialCharCounter(str)
-  let returnedString = removeCharsFromString(str, count)
+  let returnedString = replaceHTMLentityFromString(str, count)
 
   return returnedString
 }

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { QuestionCard } from '../components/QuestionCard'
 import { Text, View } from '../components/Themed'
 import { Title } from '../components/Title'
-import { cleanStringFromUnwantedChars } from '../constants/helpers'
+import { parseQuestionString } from '../constants/helpers'
 import { Question, useStore } from '../store/store'
 import { RootStackScreenProps } from '../types'
 
@@ -15,7 +15,7 @@ export default function QuizScreen({ navigation }: RootStackScreenProps<'Quiz'>)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
   let currentQuestion = state.questions[currentQuestionIndex]
   const question =
-    currentQuestion !== undefined ? cleanStringFromUnwantedChars(currentQuestion.question) : ''
+    currentQuestion !== undefined ? parseQuestionString(currentQuestion.question) : ''
   const answerQuestion = () => {}
   const handleOnPress = (answer: 'True' | 'False') => {
     if (currentQuestionIndex < state.questions.length - 1) {
