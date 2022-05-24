@@ -16,13 +16,14 @@ export const QuestionCard = ({ question }: QuestionCardProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 200,
-    height: 200,
+    width: '80%',
+    height: 300,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     margin: 20,
     padding: 20,
+    backgroundColor: 'transparent',
   },
   question: {
     fontSize: 20,

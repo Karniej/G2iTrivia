@@ -1,34 +1,39 @@
+import React from 'react'
 import axios from 'axios'
-import { createContext, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Button, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { API_URL } from '../constants/constants'
-import { Text, View } from '../components/Themed'
+import { Text } from '../components/Themed'
 import { Title } from '../components/Title'
 import { RootStackScreenProps } from '../types'
 import { useStore } from '../store/store'
 
-export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
+export default function HomeScreen({
+  navigation,
+}: RootStackScreenProps<'Home'>) {
   const navigateToQuiz = () => navigation.navigate('Quiz')
   const { state, setState } = useStore()
-
-  const setData = useCallback(async () => {
+  const { answers } = state
+  const setData: () => void = useCallback(async () => {
     const data = await axios.get(API_URL)
     const { data: results } = await data
-    setState({ questions: results.results, answers: [...state.answers] })
-    return data
+    setState({ questions: results.results, answers: [...answers] })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     setData()
-  }, [])
+  }, [setData])
 
   return (
     <SafeAreaView style={styles.container}>
-      <Title title='Welcome to the Trivia Challenge' />
-      <Text style={styles.subtitle}>You will be presented with 10 True or False questions</Text>
+      <Title title="Welcome to the Trivia Challenge" />
+      <Text style={styles.subtitle}>
+        You will be presented with 10 True or False questions
+      </Text>
       <Text style={styles.subtitle}>Can you score 100%?</Text>
-      <Button color='black' title='BEGIN' onPress={navigateToQuiz} />
+      <Button color="black" title="BEGIN" onPress={navigateToQuiz} />
     </SafeAreaView>
   )
 }

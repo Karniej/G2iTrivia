@@ -1,16 +1,24 @@
-import { FlatList, Pressable, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { FlatList, Pressable, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { QuestionCard } from '../components/QuestionCard'
 
 import { Text, View } from '../components/Themed'
 import { Title } from '../components/Title'
 import { parseQuestionString } from '../constants/helpers'
-import { Answer, Question, useStore } from '../store/store'
+import { Answer, useStore } from '../store/store'
 import { RootStackScreenProps } from '../types'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
-export default function ResultsScreen({ navigation }: RootStackScreenProps<'Results'>) {
+const Footer = ({ onPress }: { onPress: () => void }) => (
+  <Pressable style={styles.footer} onPress={onPress}>
+    <Text>PLAY AGAIN?</Text>
+  </Pressable>
+)
+export default function ResultsScreen({
+  navigation,
+}: RootStackScreenProps<'Results'>) {
   const { state, setState } = useStore()
-
+  const { answers, questions } = state
   const handleNavigateHome = () => navigation.navigate('Home')
   const clearState = () => {
     setState({
@@ -20,25 +28,28 @@ export default function ResultsScreen({ navigation }: RootStackScreenProps<'Resu
     handleNavigateHome()
   }
   let score = `${
-    state.answers.filter((answer: Answer) => answer.answer === answer.question.correct_answer)
-      .length
-  } / ${state.questions.length}`
+    answers.filter(
+      (answer: Answer) => answer.answer === answer.question.correct_answer,
+    ).length
+  } / ${questions.length}`
 
   const renderItem = ({ item }: { item: Answer }) => {
     const isGoodAnswer = item.answer === item.question.correct_answer
 
     return (
       <View style={styles.questionContainer}>
-        <Text style={[styles.question, styles.icon]}>{isGoodAnswer ? '+' : '-'}</Text>
-        <Text style={styles.question}>{parseQuestionString(item.question.question)}</Text>
+        {/*@ts-ignore IonicIcons error cannot be in JSX issue to fix*/}
+        <Ionicons
+          name={isGoodAnswer ? 'add' : 'remove'}
+          size={20}
+          style={styles.icon}
+        />
+        <Text style={styles.question}>
+          {parseQuestionString(item.question.question)}
+        </Text>
       </View>
     )
   }
-  const Footer = () => (
-    <Pressable style={styles.footer} onPress={clearState}>
-      <Text>PLAY AGAIN?</Text>
-    </Pressable>
-  )
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -48,7 +59,7 @@ export default function ResultsScreen({ navigation }: RootStackScreenProps<'Resu
         renderItem={renderItem}
         contentContainerStyle={styles.container}
       />
-      <Footer />
+      <Footer onPress={clearState} />
     </SafeAreaView>
   )
 }
@@ -65,18 +76,16 @@ const styles = StyleSheet.create({
   questionContainer: {
     backgroundColor: 'transparent',
     maxWidth: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
     paddingTop: 20,
     flexDirection: 'row',
   },
   question: {
-    fontSize: 18,
+    fontSize: 16,
     color: 'grey',
   },
   icon: {
-    fontSize: 30,
-    paddingRight: 10,
+    paddingRight: 5,
+    color: 'grey',
   },
   footer: {
     alignSelf: 'center',

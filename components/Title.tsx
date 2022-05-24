@@ -6,7 +6,9 @@ type TitleProps = {
   title: string
 }
 
-export const Title = ({ title }: TitleProps) => <Text style={styles.title}>{title}</Text>
+export const Title = ({ title }: TitleProps) => (
+  <Text style={styles.title}>{title}</Text>
+)
 
 const styles = StyleSheet.create({
   title: {

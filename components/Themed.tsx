@@ -9,8 +9,8 @@ import colors from '../constants/colors'
 import useColorScheme from '../hooks/useColorScheme'
 
 export function useThemeColor(
-  props: { light?: string; dark?: string },
-  colorName: keyof typeof colors.light & keyof typeof colors.dark
+  props: { dark?: string; light?: string },
+  colorName: keyof typeof colors.light & keyof typeof colors.dark,
 ) {
   const theme = useColorScheme()
   const colorFromProps = props[theme]
@@ -23,8 +23,8 @@ export function useThemeColor(
 }
 
 type ThemeProps = {
-  lightColor?: string
   darkColor?: string
+  lightColor?: string
 }
 
 export type TextProps = ThemeProps & DefaultText['props']
@@ -39,7 +39,10 @@ export function Text(props: TextProps) {
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background')
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    'background',
+  )
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />
 }

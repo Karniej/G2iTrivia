@@ -4,7 +4,7 @@ const specialCharCounter = (str: string) => {
   let i = str.length - 1
 
   while (i >= 0) {
-    if (str.charAt(i) == ch) {
+    if (str.charAt(i) === ch) {
       count++
     }
     i--

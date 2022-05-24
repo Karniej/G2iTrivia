@@ -9,12 +9,12 @@ export type Question = {
   type: string
 }
 export type Answer = {
-  question: Question
   answer: 'True' | 'False'
+  question: Question
 }
 type AppState = {
-  questions: Question[] | []
   answers: Answer[] | []
+  questions: Question[] | []
 }
 
 const initialState = {
@@ -29,7 +29,11 @@ const StoreContext = createContext<{
 
 export const StoreProvider = ({ children }: any) => {
   const [state, setState] = useState(initialState)
-  return <StoreContext.Provider value={{ state, setState }}>{children}</StoreContext.Provider>
+  return (
+    <StoreContext.Provider value={{ state, setState }}>
+      {children}
+    </StoreContext.Provider>
+  )
 }
 
 export const useStore = () => useContext(StoreContext)
