@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     margin: 20,
+    padding: 20,
   },
   question: {
     fontSize: 20,
