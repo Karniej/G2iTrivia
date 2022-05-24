@@ -11,46 +11,32 @@ const specialCharCounter = (str: string) => {
   }
   return count
 }
+
+const htmlEntities: { [key: string]: string } = {
+  '&amp;': '&',
+  '&quot;': '"',
+  '&#039;': "'",
+  '&#x3B;': ';',
+  '&#x3A;': ':',
+  '&#x40;': '@',
+  '&#x24;': '$',
+  '&#x25;': '%',
+  '&#x3F;': '?',
+  '&#x26;': '&',
+  '&#x27;': "'",
+}
+
 const replaceHTMLentityFromString = (str: string, count: number) => {
   let run = count - 1
   let firstIndex = str.indexOf('&')
   let secondIndex = str.indexOf(';')
   let divider = str.slice(firstIndex, secondIndex + 1)
   let returnedString = ''
-  switch (divider) {
-    case '&#x26;':
-    case '&amp;':
-      returnedString = str.replaceAll('&amp;', '&')
-      break
-    case '&quot;':
-      returnedString = str.replaceAll('&quot;', '"')
-      break
-    case '&#x27;':
-    case '&#039;':
-      returnedString = str.replaceAll('&#039;', "'")
-      break
-    case '&#x3B;':
-      returnedString = str.replaceAll('&#x3B;', ';')
-      break
-    case '&#x3A;':
-      returnedString = str.replaceAll('&#x3A;', ':')
-      break
-    case '&#x40;':
-      returnedString = str.replaceAll('&#x40;', '@')
-      break
-    case '&#x24;':
-      returnedString = str.replaceAll('&#x24;', '$')
-      break
-    case '&#x25;':
-      returnedString = str.replaceAll('&#x25;', '%')
-      break
-    case '&#x3F;':
-      returnedString = str.replaceAll('&#x3F;', '?')
-      break
 
-    default:
-      returnedString = str.replaceAll(divider, '')
-      break
+  if (htmlEntities[divider] && htmlEntities[divider].length > 0) {
+    returnedString = str.replaceAll(divider, htmlEntities[divider])
+  } else {
+    returnedString = str.replaceAll(divider, '')
   }
 
   if (run > 0) {
