@@ -10,7 +10,7 @@ export type Question = {
 }
 export type Answer = {
   question: Question
-  answer: boolean
+  answer: 'True' | 'False'
 }
 type AppState = {
   questions: Question[] | []

@@ -15,7 +15,7 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
   const setData = useCallback(async () => {
     const data = await axios.get(API_URL)
     const { data: results } = await data
-    setState(results.results)
+    setState({ questions: results.results, answers: [...state.answers] })
     return data
   }, [])
 

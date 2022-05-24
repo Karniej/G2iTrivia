@@ -10,20 +10,26 @@ import { RootStackScreenProps } from '../types'
 
 export default function QuizScreen({ navigation }: RootStackScreenProps<'Quiz'>) {
   const { state, setState } = useStore()
+  console.log('state: ', state)
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
   let currentQuestion = state.questions[currentQuestionIndex]
   const question =
     currentQuestion !== undefined ? cleanStringFromUnwantedChars(currentQuestion.question) : ''
   const answerQuestion = () => {}
-  const handleOnPress = (answer: boolean) => {
+  const handleOnPress = (answer: 'True' | 'False') => {
     if (currentQuestionIndex < state.questions.length - 1) {
+      setState({
+        ...state,
+        answers: [...state.answers, { question: currentQuestion, answer: answer }],
+      })
       setCurrentQuestionIndex((prevState) => prevState + 1)
     } else {
       navigation.navigate('Results')
     }
   }
 
+  console.log('state: ', state)
   return (
     <SafeAreaView style={styles.wrapper}>
       <Title title='Category' />
@@ -31,10 +37,10 @@ export default function QuizScreen({ navigation }: RootStackScreenProps<'Quiz'>)
         <QuestionCard question={question} />
         <Text>{currentQuestionIndex + 1} of 10</Text>
         <View style={styles.buttonsContainer}>
-          <Pressable style={styles.button} onPress={() => handleOnPress(true)}>
+          <Pressable style={styles.button} onPress={() => handleOnPress('True')}>
             <Text>True</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => handleOnPress(false)}>
+          <Pressable style={styles.button} onPress={() => handleOnPress('False')}>
             <Text>False</Text>
           </Pressable>
         </View>
