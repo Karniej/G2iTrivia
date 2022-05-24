@@ -1,0 +1,15 @@
+ {
+  "root": true,
+  "extends": "@react-native-community",
+  "plugins": ["typescript-sort-keys"],
+  "rules": {
+    "object-shorthand": ["error", "always"],
+    "semi": [2, "never"],
+    "typescript-sort-keys/interface": 2,
+    "typescript-sort-keys/string-enum": 2,
+    "react/react-in-jsx-scope": "off"
+  },
+  "env": {
+    "jest": true
+  }
+}
