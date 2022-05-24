@@ -38,7 +38,6 @@ export default function ResultsScreen({
 
     return (
       <View style={styles.questionContainer}>
-        {/*@ts-ignore IonicIcons error cannot be in JSX issue to fix*/}
         <Ionicons
           name={isGoodAnswer ? 'add' : 'remove'}
           size={20}
