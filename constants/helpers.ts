@@ -1,10 +1,10 @@
 const specialCharCounter = (str: string) => {
-  let ch = '&'
+  let specialChar = '&'
   let count = 0
   let i = str.length - 1
 
   while (i >= 0) {
-    if (str.charAt(i) === ch) {
+    if (str.charAt(i) === specialChar) {
       count++
     }
     i--
